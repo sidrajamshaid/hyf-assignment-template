@@ -1,1 +1,2 @@
 This is my Git week 1 assignment.
+I am learning how Git commits work.
