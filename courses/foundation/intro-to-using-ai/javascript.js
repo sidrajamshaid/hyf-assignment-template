@@ -1,4 +1,4 @@
-const button = document.querySelector("#color-button");
+const button = document.getElementById("color-button");
 
 button.addEventListener("click", function () {
   const red = Math.floor(Math.random() * 256);
