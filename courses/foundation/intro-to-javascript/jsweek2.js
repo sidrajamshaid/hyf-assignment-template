@@ -11,6 +11,7 @@ function getFullName(firstName, surName, useFormalName) {
     return firstName + " " + surName;
   }
 }
+
 // To support formal names for women, I could add another parameter
 // for the title, for example "Lord" or "Lady".
 
@@ -47,9 +48,9 @@ console.log(getEventWeekday(8));
 function whatToWear(temperature) {
   if (temperature <= 0) {
     return "Wear winter clothing";
-  } else if (temperature > 0 && temperature <= 10) {
+  } else if (temperature <= 10) {
     return "Wear a light jacket and thick clothes";
-  } else if (temperature > 10 && temperature < 20) {
+  } else if (temperature < 20) {
     return "Wear light clothes";
   } else {
     return "Wear T-shirts and shorts";
@@ -63,15 +64,17 @@ console.log(whatToWear(-2));
 const class07Students = [];
 
 function addStudentToClass(studentName) {
-  if (studentName === "") {
+  const trimmedName = studentName.trim();
+
+  if (trimmedName === "") {
     console.log("You cannot add an empty string to a class");
-  } else if (class07Students.includes(studentName)) {
-    console.log(studentName + " is already in the class");
+  } else if (class07Students.includes(trimmedName)) {
+    console.log(trimmedName + " is already in the class");
   } else if (
     class07Students.length < 6 ||
-    studentName === "Mary Elizabeth Donaldson"
+    trimmedName === "Mary Elizabeth Donaldson"
   ) {
-    class07Students.push(studentName);
+    class07Students.push(trimmedName);
   } else {
     console.log("Cannot add more students to class 07");
   }
@@ -126,11 +129,7 @@ function canBuyMoreCandy() {
     totalPrice = totalPrice + boughtCandyPrices[i];
   }
 
-  if (totalPrice < amountToSpend) {
-    return true;
-  } else {
-    return false;
-  }
+  return totalPrice < amountToSpend;
 }
 
 addCandy("sweet", 20);
