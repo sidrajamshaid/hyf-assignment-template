@@ -1,15 +1,21 @@
 // Exercise 1 — Flight booking
 
-function getFullname(firstName, surName, useFormalName) {
+function getFullName(firstName, surName, useFormalName) {
+  if (firstName === "" || surName === "") {
+    return "Please enter both first name and surname";
+  }
+
   if (useFormalName === true) {
     return "Lord " + firstName + " " + surName;
   } else {
     return firstName + " " + surName;
   }
 }
+// To support formal names for women, I could add another parameter
+// for the title, for example "Lord" or "Lady".
 
-const formalName = getFullname("Benjamin", "Hughes", true);
-const normalName = getFullname("Benjamin", "Hughes", false);
+const formalName = getFullName("Benjamin", "Hughes", true);
+const normalName = getFullName("Benjamin", "Hughes", false);
 
 console.log(formalName);
 console.log(normalName);
