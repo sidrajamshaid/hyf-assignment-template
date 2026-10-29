@@ -14,7 +14,10 @@ const names = [
 const nameToRemove = "Ahmad";
 
 const index = names.indexOf(nameToRemove);
-names.splice(index, 1);
+
+if (index !== -1) {
+  names.splice(index, 1);
+}
 
 console.log(names);
 
@@ -31,7 +34,7 @@ function calculateTravelTime(travelInformation) {
   const hours = Math.floor(time);
   const minutes = Math.round((time - hours) * 60);
 
-  return hours + " hours and " + minutes + " minutes";
+  return `${hours} hours and ${minutes} minutes`;
 }
 
 const travelTime = calculateTravelTime(travelInformation);
@@ -71,12 +74,12 @@ function logOutSeriesText() {
     const seriesInMinutes =
       series.days * 24 * 60 + series.hours * 60 + series.minutes;
 
-    const percentage = (seriesInMinutes / lifeInMinutes) * 100;
+    const seriesPercentDurationOfLife = (seriesInMinutes / lifeInMinutes) * 100;
 
-    totalPercentage = totalPercentage + percentage;
+    totalPercentage = totalPercentage + seriesPercentDurationOfLife;
 
     console.log(
-      series.title + " took " + percentage.toFixed(2) + "% of my life",
+      `${series.title} took ${seriesPercentDurationOfLife.toFixed(2)}% of my life`,
     );
   }
 
@@ -93,8 +96,8 @@ const notes = [];
 
 function saveNote(content, id) {
   const note = {
-    content: content,
-    id: id,
+    content,
+    id,
   };
 
   notes.push(note);
@@ -109,10 +112,8 @@ console.log(notes);
 
 function getNote(id) {
   if (typeof id !== "number") {
-    console.log("Error: id must be a number");
-    return;
+    return "Please, make sure the ID is a valid number. Try again.";
   }
-
   for (let i = 0; i < notes.length; i++) {
     const note = notes[i];
 
@@ -122,8 +123,7 @@ function getNote(id) {
   }
 }
 
-const firstNote = getNote(1);
-console.log(firstNote);
+console.log(getNote(1));
 
 // Log out notes
 
@@ -132,10 +132,7 @@ function logOutNotesFormatted() {
     const note = notes[i];
 
     console.log(
-      "The note with id: " +
-        note.id +
-        ", has the following note text: " +
-        note.content,
+      `The note with id: ${note.id}, has the following note text: ${note.content}`,
     );
   }
 }
