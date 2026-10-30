@@ -11,19 +11,24 @@ const jokes = [
 ];
 
 function getReply(command) {
-  const words = command.split(" ");
+  const lowerCommand = command.toLowerCase();
+  const words = lowerCommand.split(" ");
+  const originalWords = command.split(" ");
 
   // Name
-  if (command.startsWith("hello my name is")) {
-    if (words[4] === userName) {
+  if (lowerCommand.startsWith("hello my name is")) {
+    if (words[4] === userName.toLowerCase()) {
       return `I already know your name is ${userName}`;
     }
 
-    userName = words[4];
+    userName = originalWords[4];
     return `Nice to meet you ${userName}`;
   }
 
-  if (command === "what is my name") {
+  if (
+    lowerCommand === "what is my name" ||
+    lowerCommand === "what is my name?"
+  ) {
     if (userName === "") {
       return "I don't know your name yet";
     }
@@ -32,19 +37,22 @@ function getReply(command) {
   }
 
   // Add todo
-  if (command.startsWith("add ")) {
-    let todo = command.replace("add ", "");
+  if (lowerCommand.startsWith("add ")) {
+    let todo = lowerCommand.replace("add ", "");
     todo = todo.replace("to my todo", "");
     todo = todo.trim();
 
-    todos.push(todo);
+    if (todo === "") {
+      return "Please tell me what to add to your todo";
+    }
 
+    todos.push(todo);
     return `${todo} added to your todo`;
   }
 
   // Remove todo
-  if (command.startsWith("remove ")) {
-    let todo = command.replace("remove ", "");
+  if (lowerCommand.startsWith("remove ")) {
+    let todo = lowerCommand.replace("remove ", "");
     todo = todo.replace("from my todo", "");
     todo = todo.trim();
 
@@ -59,12 +67,12 @@ function getReply(command) {
   }
 
   // Show todos
-  if (command === "what is on my todo?") {
+  if (lowerCommand === "what is on my todo?") {
     return `You have ${todos.length} todos - ${todos.join(" and ")}`;
   }
 
   // Show date
-  if (command === "what day is it today?") {
+  if (lowerCommand === "what day is it today?") {
     const today = new Date();
 
     const day = today.getDate();
@@ -76,7 +84,7 @@ function getReply(command) {
 
   // Basic maths
   if (
-    command.startsWith("what is ") &&
+    lowerCommand.startsWith("what is ") &&
     (words[3] === "+" ||
       words[3] === "-" ||
       words[3] === "*" ||
@@ -106,8 +114,13 @@ function getReply(command) {
   }
 
   // Timer
-  if (command.startsWith("set a timer for ")) {
+  if (lowerCommand.startsWith("set a timer for ")) {
     const minutes = Number(words[4]);
+
+    if (!Number.isFinite(minutes) || minutes <= 0) {
+      return "Please enter a valid number of minutes";
+    }
+
     const milliseconds = minutes * 60 * 1000;
 
     setTimeout(() => {
@@ -118,7 +131,7 @@ function getReply(command) {
   }
 
   // Own command - Time
-  if (command === "what time is it?") {
+  if (lowerCommand === "what time is it?") {
     const now = new Date();
     const hours = now.getHours();
     const minutes = now.getMinutes().toString().padStart(2, "0");
@@ -127,33 +140,49 @@ function getReply(command) {
   }
 
   // Own command - Random joke
-  if (command === "tell me a joke") {
+  if (lowerCommand === "tell me a joke") {
     const randomNumber = Math.floor(Math.random() * jokes.length);
     return jokes[randomNumber];
   }
+
+  return "Sorry, I didn't understand that command";
 }
 
 // Test the voice assistant
-console.log(getReply("what is my name"));
-console.log(getReply("hello my name is sidra"));
-console.log(getReply("hello my name is sidra"));
-console.log(getReply("what is my name"));
 
-console.log(getReply("add fishing to my todo"));
-console.log(getReply("add singing in the shower to my todo"));
-console.log(getReply("add meeting to my todo"));
+// Name
+console.log(getReply("What is my name"));
+console.log(getReply("Hello my name is Benjamin"));
+console.log(getReply("Hello my name is Benjamin"));
+console.log(getReply("What is my name?"));
 
-console.log(getReply("remove fishing from my todo"));
-console.log(getReply("what is on my todo?"));
+// Todos
+console.log(getReply("Add fishing to my todo"));
+console.log(getReply("Add singing in the shower to my todo"));
+console.log(getReply("Add meeting to my todo"));
+console.log(getReply("Remove fishing from my todo"));
+console.log(getReply("What is on my todo?"));
 
-console.log(getReply("what day is it today?"));
+// Empty todo
+console.log(getReply("Add to my todo"));
 
-console.log(getReply("what is 3 + 100"));
-console.log(getReply("what is 100 - 3"));
-console.log(getReply("what is 3 * 100"));
-console.log(getReply("what is 3 / 100"));
+// Date
+console.log(getReply("What day is it today?"));
 
-console.log(getReply("set a timer for 0.1 minutes"));
+// Maths
+console.log(getReply("What is 3 + 100"));
+console.log(getReply("What is 100 - 3"));
+console.log(getReply("What is 3 * 100"));
+console.log(getReply("What is 3 / 100"));
 
-console.log(getReply("what time is it?"));
-console.log(getReply("tell me a joke"));
+// Timer
+console.log(getReply("Set a timer for bananas minutes"));
+console.log(getReply("Set a timer for -5 minutes"));
+console.log(getReply("Set a timer for 0.1 minutes"));
+
+// Own commands
+console.log(getReply("What time is it?"));
+console.log(getReply("Tell me a joke"));
+
+// Unknown command
+console.log(getReply("Can you sing a song?"));
